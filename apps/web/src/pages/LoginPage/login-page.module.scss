@@ -17,7 +17,9 @@
         @include base-button($primary-light, $primary-dark);
         @include darken-actions($primary-light, $primary-dark);
         @include scale-actions;
-        transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        &:active {
+            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
         padding: {
             inline: 1rem;
             block: 0.5rem;

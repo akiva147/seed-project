@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { EnvironmentVariables } from '../types/env.types.js';
 
 export const EnvSchema = z.object({
-  PORT: z.string().default('8080'),
+  PORT: z.string().default('5000'),
   CLIENT_URL: z.string().default('http://localhost:3000'),
   DB_CONNECTION: z.string()
 });

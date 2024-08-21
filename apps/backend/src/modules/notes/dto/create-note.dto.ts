@@ -1,4 +1,4 @@
-import { NoteSchema } from '@seed-project/models';
+import { Note, NoteSchema } from '@seed-project/models';
 import { createZodDto } from 'nestjs-zod';
 
 export class CreateNoteDto extends createZodDto(
@@ -6,3 +6,5 @@ export class CreateNoteDto extends createZodDto(
     content: true,
   }),
 ) {}
+
+export type NoteDocument = Omit<Note, '_id'> & Document;

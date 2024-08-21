@@ -1,20 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { Note } from '@seed-project/models';
 import { Collection, Db, ObjectId } from 'mongodb';
-import { CreateNoteDto } from './dto/create-note.dto.js';
-import { UpdateNoteDto } from './dto/update-note.dto.js';
-import { InjectMongoDB } from '../../database/injectDatabase.decorator.js';
+import { InjectDB } from '../../database/injectDatabase.decorator.js';
 import { User } from '../../types/auth.type.js';
+import { CreateNoteDto, NoteDocument } from './dto/create-note.dto.js';
+import { UpdateNoteDto } from './dto/update-note.dto.js';
 
 @Injectable()
 export class NotesService {
-  private noteModel: Collection<Omit<Note, '_id'>>;
-  constructor(@InjectMongoDB() private readonly db: Db) {
+  private noteModel: Collection<NoteDocument>;
+  constructor(@InjectDB() private readonly db: Db) {
     this.noteModel = this.db.collection('notes');
   }
 
   async getAll() {
     try {
+      console.log(
+        '🚀 ~ NotesService ~ getAll ~ this.noteModel.find({}).toArray():',
+        this.noteModel.find({}).toArray(),
+      );
       const notes = await this.noteModel.find().toArray();
       return notes;
     } catch (e) {
@@ -41,7 +44,10 @@ export class NotesService {
   async update(note: UpdateNoteDto, user: User) {
     try {
       const response = await this.noteModel.updateOne(
-        { _id: new ObjectId(note._id.toString()), 'createdBy.oid': user.userName },
+        {
+          _id: new ObjectId(note._id.toString()),
+          'createdBy.oid': user.userName,
+        },
         {
           $set: { content: note.content },
         },
