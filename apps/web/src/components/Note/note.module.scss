@@ -1,0 +1,65 @@
+@use '../../theme/theme' as *;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: $primary-light;
+    box-sizing: border-box;
+    border: 1px solid darken($primary-light, 10);
+
+    padding: 1rem;
+    border-radius: 0.3rem;
+    & > header {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            aspect-ratio: 1;
+        }
+    }
+
+    & > main {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        textarea {
+            font-size: 1.1rem;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            resize: none;
+        }
+
+        time {
+            font-size: 0.9rem;
+            color: $primary-dark;
+        }
+
+        button {
+            padding-block: 0.2rem;
+        }
+    }
+
+    button {
+        @include base-button($primary-lighter, $primary-dark);
+        transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        padding: 0.5rem;
+        border: 1px solid darken($primary, 5);
+        border-radius: 0.3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:hover {
+            background-color: darken($primary-lighter, 2);
+            box-shadow: 0 0 0.5rem rgba(darken($primary-lighter, 5), 0.4);
+        }
+
+        &:active {
+            background-color: darken($primary-lighter, 10);
+            box-shadow: none;
+        }
+    }
+}

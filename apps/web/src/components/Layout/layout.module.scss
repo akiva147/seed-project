@@ -1,0 +1,30 @@
+@use '../../theme/theme' as *;
+
+.container {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    & > header {
+        height: 3rem;
+        background-color: $primary-lighter;
+        border-bottom: 1px solid $primary-light;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    & > main {
+        flex: 1;
+        width: 100%;
+        max-width: 1000px;
+        padding-block: 1rem;
+        margin-inline: auto;
+    }
+
+    & > footer {
+        height: 2rem;
+    }
+
+    background-color: lighten($primary-lighter, 5);
+}

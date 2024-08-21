@@ -1,0 +1,15 @@
+$primary-darker: #1a2b3d;
+$primary-dark: #2e4c6d;
+$primary: #396eb0;
+$primary-light: #dbe6fd;
+$primary-lighter: #f6f9ff;
+$error: hsla(0, 84%, 64%, 1);
+
+:export {
+    primaryDarker: $primary-darker;
+    primaryDark: $primary-dark;
+    primary: $primary;
+    primaryLight: $primary-light;
+    primaryLighter: $primary-lighter;
+    error: $error;
+}

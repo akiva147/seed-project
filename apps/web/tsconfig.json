@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        /* Base Options: */
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "target": "es2022",
+        // "verbatimModuleSyntax": true,
+        "allowJs": false,
+        "resolveJsonModule": true,
+        "moduleDetection": "force",
+
+        /* Strictness */
+        "strict": true,
+        "noUncheckedIndexedAccess": false,
+
+        /* If transpiling with TypeScript: */
+        "module": "ES2022",
+        "moduleResolution": "Bundler",
+        "outDir": "dist",
+
+        "lib": ["es2022", "DOM", "DOM.Iterable"],
+
+        "useDefineForClassFields": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "isolatedModules": true,
+        "noEmit": true,
+
+        "jsx": "react-jsx",
+        "baseUrl": "./",
+        "types": ["vitest/importMeta", "vitest/globals"]
+    },
+    "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

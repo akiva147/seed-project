@@ -1,0 +1,27 @@
+@use '../../theme/theme' as *;
+
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    background-color: $primary-lighter;
+
+    & > h1 {
+        color: $primary-dark;
+    }
+
+    & > button {
+        @include base-button($primary-light, $primary-dark);
+        @include darken-actions($primary-light, $primary-dark);
+        @include scale-actions;
+        transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        padding: {
+            inline: 1rem;
+            block: 0.5rem;
+        }
+        border-radius: 0.2rem;
+    }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@seed-project/models",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --external react",
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts --external react",
+    "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "author": "Itay Lisaey",
+  "license": "ISC",
+  "dependencies": {
+    "bson": "^6.2.0",
+    "ramda": "^0.29.1",
+    "typescript": "^5.2.2",
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "@types/ramda": "^0.29.8",
+    "@types/validator": "^13.11.6",
+    "tsup": "^6.5.0"
+  },
+  "peerDependencies": {
+    "zod": "^3.22.2"
+  }
+}

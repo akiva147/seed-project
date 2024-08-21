@@ -1,0 +1,27 @@
+@use './theme' as theme;
+@include theme.css-reset;
+
+body {
+    height: 100vh;
+    @include theme.default-font;
+}
+
+#root {
+    height: 100%;
+}
+
+*[data-hidden='all'] {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    *[data-hidden='mobile'] {
+        display: none;
+    }
+}
+
+@media (min-width: 800px) {
+    *[data-hidden='desktop'] {
+        display: none;
+    }
+}
