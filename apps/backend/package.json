@@ -25,8 +25,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@azure/identity": "^4.0.1",
-    "@azure/keyvault-secrets": "^4.7.0",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
@@ -37,7 +35,6 @@
     "@nestjs/platform-express": "^10.2.6",
     "@nestjs/throttler": "^5.0.0",
     "@seed-project/models": "*",
-    "applicationinsights": "^2.3.5",
     "compression": "^1.7.4",
     "express-xss-sanitizer": "^1.1.1",
     "helmet": "^7.0.0",
@@ -45,7 +42,6 @@
     "mongodb": "^4.10.0",
     "nestjs-zod": "^3.0.0",
     "passport": "^0.6.0",
-    "passport-azure-ad": "^4.3.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.5",
     "rxjs": "^7.8.1"
@@ -59,7 +55,6 @@
     "@types/hpp": "^0.2.4",
     "@types/jest": "^29.5.7",
     "@types/node": "^20.8.10",
-    "@types/passport-azure-ad": "^4.3.4",
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^6.9.1",
     "@typescript-eslint/parser": "^6.9.1",

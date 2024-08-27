@@ -3,6 +3,14 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
+      "env": [
+        "PORT",
+        "DB_CONNECTION",
+        "CLIENT_URL",
+        "VITE_WEB_URL",
+        "VITE_WEB_TITLE",
+        "VITE_BACKEND_LOCATION"
+      ],
       "outputs": ["dist/**"]
     },
     "lint": {},
