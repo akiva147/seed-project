@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { validateEnvs } from 'src/utils/env.util';
 
-const { VITE_BACKEND_LOCATION } = validateEnvs();
+const { VITE_SERVER_LOCATION } = validateEnvs();
 
 export const authenticatedInstance = axios.create({
-    baseURL: VITE_BACKEND_LOCATION,
+    baseURL: VITE_SERVER_LOCATION,
 });
 
 /**

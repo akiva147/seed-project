@@ -69,11 +69,11 @@
         },
         "import/resolver": {
             "typescript": {
-                "project": ["apps/web/tsconfig.json"]
+                "project": ["apps/client/tsconfig.json"]
             },
             "node": {
                 "extensions": [".js", ".jsx", ".ts", ".tsx"],
-                "project": ["apps/web/tsconfig.json"]
+                "project": ["apps/client/tsconfig.json"]
             }
         }
     }

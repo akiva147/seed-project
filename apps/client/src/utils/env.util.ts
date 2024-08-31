@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 const EnvSchema = z.object({
-    VITE_BACKEND_LOCATION: z.string(),
-    VITE_WEB_URL: z.string(),
-    VITE_WEB_TITLE: z.string(),
+    VITE_SERVER_LOCATION: z.string(),
+    VITE_CLIENT_URL: z.string(),
+    VITE_CLIENT_TITLE: z.string(),
 });
 
 type Env = z.infer<typeof EnvSchema>;
