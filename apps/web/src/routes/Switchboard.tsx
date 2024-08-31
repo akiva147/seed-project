@@ -35,7 +35,7 @@ const getRouter = (currentUser: AccountInfo | undefined) =>
         },
         {
             path: '/login',
-            element: <LoginPage />,
+            element: <Notes />,
         },
         {
             path: '*',
