@@ -1,11 +1,12 @@
 @use './colors' as c;
 
 @mixin base-button($back: c.$primary-dark, $text: c.$primary-light) {
-    border: none;
-    cursor: pointer;
-    color: $text;
-    background-color: $back;
-
+    & {
+        border: none;
+        cursor: pointer;
+        color: $text;
+        background-color: $back;
+    }
     &:disabled {
         cursor: not-allowed !important;
         background-color: lightgrey !important;
@@ -13,10 +14,12 @@
 }
 
 @mixin outline-button($back: c.$primary-dark, $text: c.$light) {
-    @include base-button($back, $text);
+    & {
+        @include base-button($back, $text);
 
-    border: 0.13rem solid $text;
-    transition: all 0.2s ease;
+        border: 0.13rem solid $text;
+        transition: all 0.2s ease;
+    }
 
     &:hover {
         border-color: rgba(c.$dark, 0.5);

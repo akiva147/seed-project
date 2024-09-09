@@ -44,7 +44,6 @@
     }
 
     button {
-        @include base-button($primary-lighter, $primary-dark);
         transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
         padding: 0.5rem;
         border: 1px solid darken($primary, 5);
@@ -61,5 +60,6 @@
             background-color: darken($primary-lighter, 10);
             box-shadow: none;
         }
+        @include base-button($primary-lighter, $primary-dark);
     }
 }

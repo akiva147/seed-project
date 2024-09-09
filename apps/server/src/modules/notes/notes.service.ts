@@ -14,10 +14,6 @@ export class NotesService {
 
   async getAll() {
     try {
-      console.log(
-        '🚀 ~ NotesService ~ getAll ~ this.noteModel.find({}).toArray():',
-        this.noteModel.find({}).toArray(),
-      );
       const notes = await this.noteModel.find().toArray();
       return notes;
     } catch (e) {
