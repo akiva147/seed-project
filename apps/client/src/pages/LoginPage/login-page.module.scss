@@ -14,16 +14,16 @@
     }
 
     & > button {
-        @include base-button($primary-light, $primary-dark);
-        @include darken-actions($primary-light, $primary-dark);
-        @include scale-actions;
-        &:active {
-            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
         padding: {
             inline: 1rem;
             block: 0.5rem;
         }
         border-radius: 0.2rem;
+        &:active {
+            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        @include base-button($primary-light, $primary-dark);
+        @include darken-actions($primary-light, $primary-dark);
+        @include scale-actions;
     }
 }
