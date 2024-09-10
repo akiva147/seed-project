@@ -1,14 +1,16 @@
 import { createContext, useState } from 'react';
 
 export type AccountInfo = {
-    userName: string
-}
+    userName: string;
+};
 export interface UserContextProps {
-    currentUser: AccountInfo | undefined;
+    user: AccountInfo | undefined;
+    setUser: React.Dispatch<React.SetStateAction<AccountInfo | undefined>>;
 }
 
 export const UserContext = createContext<UserContextProps>({
-    currentUser: undefined,
+    user: undefined,
+    setUser: () => {},
 });
 
 export interface UserProviderProps {
@@ -16,10 +18,14 @@ export interface UserProviderProps {
 }
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-    const [currentUser] = useState<AccountInfo | undefined>(undefined)
+    const [user, setUser] = useState<AccountInfo | undefined>(undefined);
+
+    const setCurrentUser = (
+        credentialResponse: CredentialResponse
+    ): AccountInfo => {};
 
     return (
-        <UserContext.Provider value={{ currentUser }}>
+        <UserContext.Provider value={{ user, setUser }}>
             {children}
         </UserContext.Provider>
     );

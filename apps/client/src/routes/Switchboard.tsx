@@ -35,7 +35,7 @@ const getRouter = (currentUser: AccountInfo | undefined) =>
         },
         {
             path: '/login',
-            element: <Notes />,
+            element: <LoginPage />,
         },
         {
             path: '*',
@@ -44,7 +44,7 @@ const getRouter = (currentUser: AccountInfo | undefined) =>
     ]);
 
 export const Switchboard: React.FC<SwitchboardProps> = () => {
-    const { currentUser } = useContext(UserContext);
+    const { user: currentUser } = useContext(UserContext);
 
     return <RouterProvider router={getRouter(currentUser)} />;
 };

@@ -9,6 +9,9 @@ import { HealthModule } from './modules/health/health.module.js';
 import { NotesModule } from './modules/notes/notes.module.js';
 import { AllExceptionsFilter } from './errors/catch-all-exception.filter.js';
 import { MongodbExceptionFilter } from './errors/mongodb-exception.filter.js';
+import { UserModule } from './modules/user/user.module.js';
+import { AuthModule } from './auth/auth.module.js';
+import { AuthGuard } from './guards/auth.guard.js';
 
 @Module({
   imports: [
@@ -24,11 +27,17 @@ import { MongodbExceptionFilter } from './errors/mongodb-exception.filter.js';
     MongoDBModule,
     HealthModule,
     NotesModule,
+    UserModule,
+    AuthModule,
   ],
   providers: [
     {
       provide: APP_PIPE,
       useClass: ZodValidationPipe,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
     },
     {
       provide: APP_GUARD,

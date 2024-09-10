@@ -4,6 +4,8 @@ const EnvSchema = z.object({
     VITE_SERVER_LOCATION: z.string(),
     VITE_CLIENT_URL: z.string(),
     VITE_CLIENT_TITLE: z.string(),
+    VITE_GOOGLE_CLIENT_ID: z.string(),
+    VITE_GOOGLE_CLIENT_SECRET: z.string(),
 });
 
 type Env = z.infer<typeof EnvSchema>;
