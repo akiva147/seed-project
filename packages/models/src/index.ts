@@ -1,1 +1,2 @@
-export * from "./note/note.model";
+export * from "./note/index";
+export * from "./user/index";

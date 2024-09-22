@@ -1,32 +1,62 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  CanActivate,
+  ExecutionContext,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorators/publicRoute.decorator.js';
 import { Role, ROLES_KEY } from '../decorators/roles.decorator.js';
+import { UserService } from '../modules/user/user.service.js';
+import { Roles } from '@seed-project/models';
+import { Request } from '../types/express.type.js';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   async canActivate(context: ExecutionContext) {
+    if (this.devMode()) {
+      return true;
+    }
+
     const publicRoute = this.isPublic(context);
     if (publicRoute) return true;
 
-    const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
-      context.getHandler(),
-      context.getClass(),
+    const classScope = context.getClass();
+    const handlerScope = context.getHandler();
+
+    const requiredRoles = this.reflector.getAllAndOverride<Roles[]>(ROLES_KEY, [
+      handlerScope,
+      classScope,
     ]);
 
-    if (!requiredRoles || requiredRoles[0] === Role.AllAuthenticated) {
+    if (!requiredRoles) {
       return true;
     }
 
     const req: Request = context.switchToHttp().getRequest();
-    const { user }: any = req;
 
-    const allowed = requiredRoles.some((role) => user.role.type === role);
+    const { user } = req;
+
+    if (!user) throw new BadRequestException('user is undefined');
+
+    const allowed = requiredRoles.some((role) => user.role === role);
     if (!allowed) return false;
 
     return true;
+  }
+
+  private devMode() {
+    if (
+      process.env
+        .VERY_DANGEROUS_CHECK_DO_NOT_USE_THIS_ITS_FOR_TESTING_ONLY_BE_CAREFUL_PLEASE ===
+      'development'
+    ) {
+      return true;
+    }
+    return false;
   }
 
   private isPublic(context: ExecutionContext) {

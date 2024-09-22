@@ -9,19 +9,22 @@ import { PublicRoutes } from './PublicRoutes';
 import { Layout } from 'src/components/Layout';
 import { BaseErrorBoundary } from 'src/components/BaseErrorBoundary';
 import { Notes } from 'src/components/Notes';
-import { AccountInfo, UserContext } from 'src/contexts/UserProvider';
 import { useContext } from 'react';
 import { LoginPage } from 'src/pages/LoginPage';
+import { User } from '@seed-project/models';
+import { UserContext } from 'src/contexts/UserContext';
+import { useUser } from 'src/hooks/useUser';
 
 export interface SwitchboardProps {}
 
-const getRouter = (currentUser: AccountInfo | undefined) =>
+const getRouter = (currentUser: User | undefined) =>
     createBrowserRouter([
         {
             path: '/',
             element: <Layout />,
             errorElement: <BaseErrorBoundary />,
             loader: async () => {
+                console.log('loader:  currentUser:', currentUser);
                 if (!currentUser) {
                     throw redirect('/login');
                 }
@@ -44,7 +47,8 @@ const getRouter = (currentUser: AccountInfo | undefined) =>
     ]);
 
 export const Switchboard: React.FC<SwitchboardProps> = () => {
-    const { user: currentUser } = useContext(UserContext);
+    const { currentUser } = useUser();
+    console.log('currentUser:', currentUser);
 
     return <RouterProvider router={getRouter(currentUser)} />;
 };

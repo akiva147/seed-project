@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './AuthProvider';
+import { TokenProvider } from './TokenContext';
 
 const queryClient = new QueryClient();
 export interface GlobalProviderProps {
@@ -9,7 +10,7 @@ export interface GlobalProviderProps {
 export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => (
     <AuthProvider>
         <QueryClientProvider client={queryClient}>
-            {children}
+            <TokenProvider>{children}</TokenProvider>
         </QueryClientProvider>
     </AuthProvider>
 );

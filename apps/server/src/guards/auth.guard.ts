@@ -1,20 +1,21 @@
 import {
   CanActivate,
   ExecutionContext,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { jwtConstants } from '../auth/constants.js';
 import { IS_PUBLIC_KEY } from '../decorators/publicRoute.decorator.js';
-import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
+import { UserService } from '../modules/user/user.service.js';
+import jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private jwtService: JwtService,
     private reflector: Reflector,
+    @Inject(UserService) private userService: UserService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -22,8 +23,8 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+
     if (isPublic) {
-      // 💡 See this condition
       return true;
     }
 
@@ -33,12 +34,9 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
-        secret: jwtConstants.secret,
-      });
-      // 💡 We're assigning the payload to the request object here
-      // so that we can access it in our route handlers
-      request['user'] = payload;
+      const payload = jwt.decode(token) as any;
+      const user = await this.userService.findOne(payload);
+      request['user'] = user;
     } catch {
       throw new UnauthorizedException();
     }

@@ -3,23 +3,18 @@
 import axios from 'axios';
 import { CredentialResponse } from '@react-oauth/google';
 import { authenticatedInstance } from './index.service';
+import { UserSchema } from '@seed-project/models';
 
 const PREFIX = 'user';
 
 export class UserService {
-    async getLoggedInUser(credentialResponse: CredentialResponse | undefined) {
+    async getLoggedInUser() {
         try {
-            if (!credentialResponse)
-                throw new Error('Credential response in undefined');
-            const { data } = await authenticatedInstance.get(`${PREFIX}/me`, {
-                headers: {
-                    Authorization: `Bearer ${credentialResponse.credential}`,
-                },
-            });
+            const { data } = await authenticatedInstance.get(`${PREFIX}/me`);
             console.log('🚀 ~ UserService ~ getLoggedInUser ~ data:', data);
+            const user = UserSchema.parse(data);
 
-            // UserSchema.parse(data);
-            return data;
+            return user;
         } catch (error) {
             console.error('Error fetching user', error);
             throw new Error('Error fetching user');

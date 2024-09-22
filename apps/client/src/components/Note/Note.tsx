@@ -37,9 +37,7 @@ export const Note = ({ content, createdAt, _id, createdBy }: NoteProps) => {
             content: noteContent,
         });
 
-    const displayName = convertEmailDisplayNameToUppercasedName(
-        createdBy.displayName
-    );
+    const displayName = convertEmailDisplayNameToUppercasedName(createdBy.name);
 
     return (
         <div className={classes.container}>

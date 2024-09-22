@@ -1,5 +1,6 @@
 import { Request as ExpressRequest } from 'express';
-import { User } from './auth.type.js';
+import { GoogleUser } from './auth.type.js';
+import { User } from '@seed-project/models';
 
 export interface Request extends ExpressRequest {
   user?: User;

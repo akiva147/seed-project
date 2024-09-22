@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Collection, Db, ObjectId } from 'mongodb';
 import { InjectDB } from '../../database/injectDatabase.decorator.js';
-import { User } from '../../types/auth.type.js';
+import { GoogleUser } from '../../types/auth.type.js';
 import { CreateNoteDto, NoteDocument } from './dto/create-note.dto.js';
 import { UpdateNoteDto } from './dto/update-note.dto.js';
+import { User } from '@seed-project/models';
 
 @Injectable()
 export class NotesService {
@@ -26,8 +27,8 @@ export class NotesService {
       const response = await this.noteModel.insertOne({
         content: note.content,
         createdBy: {
-          oid: user.userName,
-          displayName: user.userName,
+          _id: user._id,
+          name: user.name,
         },
         createdAt: new Date(),
       });
@@ -41,8 +42,8 @@ export class NotesService {
     try {
       const response = await this.noteModel.updateOne(
         {
-          _id: new ObjectId(note._id.toString()),
-          'createdBy.oid': user.userName,
+          _id: new ObjectId(note._id),
+          'createdBy._id': user._id,
         },
         {
           $set: { content: note.content },
@@ -54,13 +55,14 @@ export class NotesService {
     }
   }
 
-  async delete(id: string, user: User) {
+  async delete(_id: string, user: User) {
     try {
-      const response = await this.noteModel.deleteOne({
-        _id: new ObjectId(id),
-        'createdBy.userName': user.userName,
-      });
-      return response;
+      const note = await this.noteModel.findOne({ _id: new ObjectId(_id) });
+      if (!note) throw new Error('Note id not found');
+      if (user.role !== 'Admin' && user._id !== note.createdBy._id)
+        throw new UnauthorizedException();
+      const res = await this.noteModel.deleteOne({ _id: new ObjectId(_id) });
+      return res;
     } catch (e) {
       throw new Error('Error deleting note');
     }

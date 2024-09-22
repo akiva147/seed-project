@@ -1,39 +1,30 @@
 import { CredentialResponse, googleLogout } from '@react-oauth/google';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { AccountInfo } from 'src/contexts/UserProvider';
 import { userService } from 'src/services/user.service';
+import { jwtDecode } from 'jwt-decode';
 
 export const useUser = () => {
-    // const [currGoogleUser, setCurrGoogleUser] = useState<
-    //     AccountInfo | undefined
-    // >(undefined);
+    const token = localStorage.getItem('loginToken');
+    const isTokenValid = token === null ? false : jwtDecode(token);
+    console.log('useUser  isTokenValid:', isTokenValid);
 
-    // const setCurrentUser = (credentialResponse: CredentialResponse): AccountInfo => {
-
-    // }
-    const [credentialResponse, setCredentialResponse] = useState<
-        CredentialResponse | undefined
-    >(undefined);
-
-    const logout = async () => {
+    const logOut = () => {
         googleLogout();
-        // setCurrGoogleUser(undefined);
+        localStorage.removeItem('loginToken');
     };
 
     const { data: currentUser, status } = useQuery({
-        enabled: Boolean(credentialResponse),
+        enabled: Boolean(isTokenValid),
         queryKey: ['loginUser'],
-        queryFn: async () =>
-            await userService.getLoggedInUser(credentialResponse),
+        queryFn: async () => await userService.getLoggedInUser(),
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     });
 
     return {
         currentUserStatus: status,
-        setCredentialResponse,
         currentUser,
-        logoutUser: logout,
+        logoutUser: logOut,
     };
 };

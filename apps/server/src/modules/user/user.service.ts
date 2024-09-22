@@ -1,45 +1,46 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Collection, Db } from 'mongodb';
 import { InjectDB } from '../../database/injectDatabase.decorator.js';
-import { UserDocument } from './dto/user-dto.js';
-import jwt from 'jsonwebtoken';
-import { JwtService } from '@nestjs/jwt';
-
-export type User = any;
+import { UserDocument, UserPayloadDto } from './dto/user-dto.js';
+import { GoogleUser } from '../../types/auth.type.js';
+import { GoogleUserTokenSchema } from '@seed-project/models';
 
 @Injectable()
 export class UserService {
   private userModel: Collection<UserDocument>;
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
-  constructor(
-    @InjectDB() private readonly db: Db,
-    private jwtService: JwtService,
-  ) {
+  constructor(@InjectDB() private readonly db: Db) {
     this.userModel = this.db.collection('users');
   }
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+  async findOne(payload: GoogleUser) {
+    try {
+      const googleUserToken = GoogleUserTokenSchema.parse(payload);
+      const user = await this.userModel.findOne({
+        googleId: googleUserToken.sub,
+      });
+      if (!user) {
+        const newUser = await this.create({
+          gmail: googleUserToken.email,
+          googleId: Number(googleUserToken.sub),
+          name: googleUserToken.name,
+          picture: googleUserToken.picture,
+          role: 'Normal',
+        });
+        return newUser;
+      }
+      return user;
+    } catch (error: any) {
+      throw new Error(error);
+    }
   }
 
-  async create(user: any) {
+  async create(user: UserPayloadDto) {
     try {
       await this.userModel.insertOne({
-        _id: user._id,
-        email: user.email,
-        fullName: user.fullName,
-        organization: user.organization,
+        gmail: user.gmail,
+        name: user.name,
+        googleId: user.googleId,
+        picture: user.picture,
         role: user.role,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -48,24 +49,5 @@ export class UserService {
     } catch (error: any) {
       throw new Error(error);
     }
-  }
-
-  async getSelf(token: string) {
-    // const userData = jwt.
-    try {
-      // return await this.userModel.findOne({ _id });
-    } catch (error: any) {
-      throw new Error(error);
-    }
-  }
-
-  async getRole(_id: string) {
-    const user = await this.userModel.findOne({ _id });
-    if (!user?.role && !user?.organization)
-      throw new InternalServerErrorException();
-    return {
-      role: user.role,
-      organization: user.organization,
-    };
   }
 }

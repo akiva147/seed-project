@@ -1,8 +1,9 @@
+import { User, UserSchema, UserSchemaPayload } from '@seed-project/models';
 import { Document } from 'mongodb';
 import { createZodDto } from 'nestjs-zod';
-type User = any;
-export type UserDocument = User & Document;
 
-// export class UserDto extends createZodDto(UserSchema) {}
+export type UserDocument = Omit<User, '_id'> & Document;
 
-// export class UserPayloadDto extends createZodDto(UserSchemaPayload) {}
+export class UserDto extends createZodDto(UserSchema) {}
+
+export class UserPayloadDto extends createZodDto(UserSchemaPayload) {}
