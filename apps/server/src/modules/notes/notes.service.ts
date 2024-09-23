@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Collection, Db, ObjectId } from 'mongodb';
 import { InjectDB } from '../../database/injectDatabase.decorator.js';
-import { GoogleUser } from '../../types/auth.type.js';
 import { CreateNoteDto, NoteDocument } from './dto/create-note.dto.js';
 import { UpdateNoteDto } from './dto/update-note.dto.js';
 import { User } from '@seed-project/models';

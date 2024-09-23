@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Collection, Db } from 'mongodb';
 import { InjectDB } from '../../database/injectDatabase.decorator.js';
 import { UserDocument, UserPayloadDto } from './dto/user-dto.js';

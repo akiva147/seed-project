@@ -1,7 +1,7 @@
+import { Dispatch, SetStateAction } from 'react';
 import { CodeResponse } from '@react-oauth/google';
 import axios from 'axios';
 import { validateEnvs } from './env.util';
-import { Dispatch, SetStateAction } from 'react';
 
 export const getRefreshToken = (
     codeResponse: CodeResponse,

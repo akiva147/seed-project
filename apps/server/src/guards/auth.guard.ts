@@ -9,7 +9,6 @@ import { IS_PUBLIC_KEY } from '../decorators/publicRoute.decorator.js';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { UserService } from '../modules/user/user.service.js';
-import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
 import { validateEnvs } from '../utils/env.util.js';
 import { GoogleUserTokenSchema } from '@seed-project/models';

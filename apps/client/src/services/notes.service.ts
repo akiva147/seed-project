@@ -1,6 +1,8 @@
 import { Note, NoteSchema } from '@seed-project/models';
 import { authenticatedInstance } from './index.service';
+
 const PREFIX = 'notes';
+
 class NotesService {
     async getAll() {
         try {

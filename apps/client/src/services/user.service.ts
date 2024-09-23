@@ -1,9 +1,5 @@
-// import { User, UserSchema } from '@terror-monitor/models';
-// import { axiosInstance } from './axios.service';
-import axios from 'axios';
-import { CredentialResponse } from '@react-oauth/google';
-import { authenticatedInstance } from './index.service';
 import { UserSchema } from '@seed-project/models';
+import { authenticatedInstance } from './index.service';
 
 const PREFIX = 'user';
 

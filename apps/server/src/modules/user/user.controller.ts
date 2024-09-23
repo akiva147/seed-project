@@ -2,16 +2,13 @@ import {
   Body,
   Controller,
   Get,
-  Headers,
   InternalServerErrorException,
   Post,
   Request,
 } from '@nestjs/common';
-import { Role, Roles } from '../../decorators/roles.decorator.js';
 import { Request as Req } from '../../types/express.type.js';
 import { UserService } from './user.service.js';
 import { UserPayloadDto } from './dto/user-dto.js';
-import { Public } from '../../decorators/publicRoute.decorator.js';
 
 @Controller('user')
 export class UserController {

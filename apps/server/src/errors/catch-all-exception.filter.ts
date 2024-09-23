@@ -25,6 +25,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       message = exception.message;
     }
 
+    console.log('AllExceptionsFilter ~ exception:', exception);
+
     const responseBody = {
       statusCode: statusCode,
       message: message,

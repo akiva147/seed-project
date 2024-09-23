@@ -2,13 +2,11 @@ import {
   BadRequestException,
   CanActivate,
   ExecutionContext,
-  Inject,
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorators/publicRoute.decorator.js';
-import { Role, ROLES_KEY } from '../decorators/roles.decorator.js';
-import { UserService } from '../modules/user/user.service.js';
+import { ROLES_KEY } from '../decorators/roles.decorator.js';
 import { Roles } from '@seed-project/models';
 import { Request } from '../types/express.type.js';
 
