@@ -3,18 +3,16 @@ import validator from "validator";
 import { z, ZodErrorMap } from "zod";
 
 export const validationErrors = {
-  alphabet: "צריך להיות אותיות באנגלית או בעברית בלבד",
-  english: "צריך להיות אותיות באנגלית בלבד",
-  localPhone: "מספר טלפון אינו תקין",
-  email: "האימייל אינו תקין",
-  positive: "חייב להיות מספר חיובי",
-  alphanumericHebEn: "חייב להיות טקסט בעברית או אנגלית, יכול להכיל גם מספרים",
-  enumOption: "חייב להיות טקסט בעברית או אנגלית, יכול להכיל גם מספרים",
-  text: "חייב להיות טקסט תקין, ללא סימנים מיוחדים (@,#,$,*,^,+,=,<,>,~,`,|)",
-  mongoId: "צריך להיות מזהה יחודי תקין",
-  time: "צריך להיות שעה תקינה",
-  coordinates: 'פורמט נ"צ שגוי: הפורמט הנכון הוא "קו רוחב, קו אורך"',
-  location: "חייב להיות לפחות כתובת או נקודות ציון",
+  email: "Invalid email",
+  positive: "Must be a positive number",
+  alphanumericHebEn: "Must be a text in hebrew or english, can contain numbers",
+  enumOption: "Must be a text in hebrew or english, can contain numbers",
+  text: "Must be valid text, without special characters (@,#,$,*,^,+,=,<,>,~,`,|)",
+  mongoId: "Invalid mongoId",
+  time: "Invalid time format",
+  coordinates: 'Invalid coordinates format: must be: "latitude, longitude"',
+  googleId: "Not a valid StringNumber",
+  googlePicture: "Not a valid picture url",
 };
 
 export const regexes = {
@@ -95,44 +93,16 @@ export const CustomValidations = {
       (value) => regexes.coordinates.test(value),
       validationErrors.coordinates
     ),
-  googleId: z.coerce.number().min(21).max(21),
+  googleId: z
+    .string()
+    .length(21)
+    .refine((value) => Number(value), validationErrors.googleId),
   googlePicture: z
     .string()
-    .startsWith("https://lh3.googleusercontent.com", "Not a valid picture url"),
+    .startsWith(
+      "https://lh3.googleusercontent.com",
+      validationErrors.googlePicture
+    ),
 };
-
-const CustomErrorMap: ZodErrorMap = (error, ctx) => {
-  /*
-  This is where you override the various error codes
-  */
-  switch (error.code) {
-    case z.ZodIssueCode.invalid_date:
-      return { message: "תאריך אינו תקין" };
-    case z.ZodIssueCode.invalid_type:
-      if (error.received !== "undefined") {
-        if (error.expected === "integer") {
-          return {
-            message: `סוג הערך שגוי, הסוג הרצוי הוא מספר שלם`,
-          };
-        }
-        return {
-          message: `סוג הערך שגוי, הסוג הרצוי הוא ${error.expected}`,
-        };
-      } else {
-        return { message: "שדה חובה" };
-      }
-    case z.ZodIssueCode.invalid_enum_value:
-      return { message: "יש לבחור ערך מהרשימה" };
-    case z.ZodIssueCode.too_big:
-      return { message: "ערך גדול מידי" };
-    case z.ZodIssueCode.too_small:
-      return { message: "ערך קטן מידי" };
-  }
-
-  // fall back to default message!
-  return { message: ctx.defaultError };
-};
-
-z.setErrorMap(CustomErrorMap);
 
 export default CustomValidations;

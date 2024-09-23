@@ -11,7 +11,7 @@ export const Notes = () => {
     });
 
     const handleAddNote = async () => {
-        await notesService.create('פתק חדש');
+        await notesService.create('New note');
         queryClient.invalidateQueries({
             queryKey: ['notes'],
         });
@@ -20,12 +20,12 @@ export const Notes = () => {
     return (
         <div className={classes.container}>
             <header>
-                <h1>הפתקים שלי</h1>
-                <button onClick={handleAddNote}>הוספת פתק</button>
+                <h1>My notes</h1>
+                <button onClick={handleAddNote}>Add note</button>
             </header>
             <main>
-                {isLoading && <div>טוען...</div>}
-                {isError && <div>אירעה שגיאה</div>}
+                {isLoading && <div>loading...</div>}
+                {isError && <div>Error occurred</div>}
                 {data?.map((note) => (
                     <Note key={note._id.toString()} {...note} />
                 ))}
@@ -33,5 +33,3 @@ export const Notes = () => {
         </div>
     );
 };
-
-export const HelloWorld = () => <div>Akiva test</div>;
