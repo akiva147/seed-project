@@ -1,5 +1,5 @@
 import CustomValidations from "src/utils/general.schema";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 
 export const rolesEnum = ["Admin", "Normal"] as const;
 
@@ -17,6 +17,7 @@ export const UserSchema = z.object({
 export const GoogleUserTokenSchema = z.object({
   iss: z.literal("https://accounts.google.com"),
   aud: z.string().endsWith(".apps.googleusercontent.com"),
+  azp: z.string().endsWith(".apps.googleusercontent.com"),
   sub: CustomValidations.googleId,
   email: z.string().email("Not a valid gmail address"),
   email_verified: z.boolean(),
@@ -25,8 +26,8 @@ export const GoogleUserTokenSchema = z.object({
   given_name: CustomValidations.text,
   name: CustomValidations.text,
   family_name: CustomValidations.text,
-  iat: z.number().min(10).max(10),
-  exp: z.number().min(10).max(10),
+  iat: z.number(),
+  exp: z.number(),
 });
 
 export const UserSchemaPayload = UserSchema.omit({

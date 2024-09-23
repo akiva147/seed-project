@@ -2,8 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Collection, Db } from 'mongodb';
 import { InjectDB } from '../../database/injectDatabase.decorator.js';
 import { UserDocument, UserPayloadDto } from './dto/user-dto.js';
-import { GoogleUser } from '../../types/auth.type.js';
-import { GoogleUserTokenSchema } from '@seed-project/models';
+import { GoogleUserToken, GoogleUserTokenSchema } from '@seed-project/models';
 
 @Injectable()
 export class UserService {
@@ -12,20 +11,21 @@ export class UserService {
     this.userModel = this.db.collection('users');
   }
 
-  async findOne(payload: GoogleUser) {
+  async findOne(payload: GoogleUserToken) {
     try {
       const googleUserToken = GoogleUserTokenSchema.parse(payload);
       const user = await this.userModel.findOne({
         googleId: googleUserToken.sub,
       });
       if (!user) {
-        const newUser = await this.create({
+        const res = await this.create({
           gmail: googleUserToken.email,
-          googleId: Number(googleUserToken.sub),
+          googleId: googleUserToken.sub,
           name: googleUserToken.name,
           picture: googleUserToken.picture,
           role: 'Normal',
         });
+        const newUser = await this.userModel.findOne({ _id: res.insertedId });
         return newUser;
       }
       return user;
@@ -36,7 +36,7 @@ export class UserService {
 
   async create(user: UserPayloadDto) {
     try {
-      await this.userModel.insertOne({
+      const res = await this.userModel.insertOne({
         gmail: user.gmail,
         name: user.name,
         googleId: user.googleId,
@@ -45,7 +45,7 @@ export class UserService {
         createdAt: new Date(),
         updatedAt: new Date(),
       });
-      return 'User created sucessfully';
+      return res;
     } catch (error: any) {
       throw new Error(error);
     }

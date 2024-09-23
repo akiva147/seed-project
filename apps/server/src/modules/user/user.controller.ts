@@ -27,6 +27,8 @@ export class UserController {
   // @Roles('admin')
   @Post()
   async create(@Body() user: UserPayloadDto) {
-    return await this.userService.create(user);
+    const res = await this.userService.create(user);
+    if (!res.acknowledged) throw new Error('Error creating user');
+    return 'User created sucessfully';
   }
 }

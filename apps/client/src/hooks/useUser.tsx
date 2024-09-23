@@ -1,17 +1,22 @@
 import { CredentialResponse, googleLogout } from '@react-oauth/google';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { userService } from 'src/services/user.service';
 import { jwtDecode } from 'jwt-decode';
+import { useLocalStorage } from './useStorage';
 
 export const useUser = () => {
-    const token = localStorage.getItem('loginToken');
-    const isTokenValid = token === null ? false : jwtDecode(token);
-    console.log('useUser  isTokenValid:', isTokenValid);
+    const [token, setToken, removeToken] = useLocalStorage('loginToken', null);
+
+    const isTokenValid = useMemo(
+        () => (token === null ? false : jwtDecode(token)),
+        [token]
+    );
 
     const logOut = () => {
         googleLogout();
-        localStorage.removeItem('loginToken');
+        removeToken();
+        window.location.reload();
     };
 
     const { data: currentUser, status } = useQuery({
@@ -23,6 +28,8 @@ export const useUser = () => {
     });
 
     return {
+        token,
+        setToken,
         currentUserStatus: status,
         currentUser,
         logoutUser: logOut,

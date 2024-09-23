@@ -1,78 +1,54 @@
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
-// import { decode } from 'jsonwebtoken';
-import { useContext, useEffect } from 'react';
-import axios from 'axios';
-import { TokenContext } from 'src/contexts/TokenContext';
-import { getNewAccessToken, getRefreshToken } from 'src/utils/google.util';
-import { UserContext } from 'src/contexts/UserContext';
-import classes from './login-page.module.scss';
-import { jwtDecode } from 'jwt-decode';
+import { useGoogleLogin } from '@react-oauth/google';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button, message } from 'antd';
 import { useUser } from 'src/hooks/useUser';
+import { getRefreshToken } from 'src/utils/google.util';
+import classes from './login-page.module.scss';
 
 export interface LoginPageProps {}
 
 export const LoginPage: React.FC<LoginPageProps> = () => {
-    const { token, setToken } = useContext(TokenContext);
-    const { currentUser, logoutUser } = useUser();
-    const SCOPE = 'https://mail.google.com/';
-
+    const { currentUser, logoutUser, token, setToken, currentUserStatus } =
+        useUser();
+    const [messageApi, contextHolder] = message.useMessage();
+    const navigate = useNavigate();
     const googleLogin = useGoogleLogin({
-        // adding scope to get full authority to get information
-        // scope: SCOPE,
         // to get the refresh token we need to request for authentication code.
         flow: 'auth-code',
         onSuccess: (codeResponse) => {
+            // console.log('codeResponse:', codeResponse);
             new Promise<void>((resolve) => {
                 getRefreshToken(codeResponse, setToken);
 
-                if (token) {
-                    // wait for the refresh token to arrive.
-                    resolve();
-                }
+                if (token) resolve();
             });
         },
         onError: (error: any) => {
             console.log('Login Failed:', error);
         },
     });
-
     // useEffect(() => {
-    //   if (!user) {
-    //     userserv
-    //   }
-    // }, [user])
+    //     const checkExpired = async () => {
+    //         if (currentUserStatus === 'error') {
+    //             await logoutUser();
+    //             messageApi.info(
+    //                 'Your session has expired, please reconnect to your account'
+    //             );
+    //         }
+    //     };
+    //     checkExpired();
+    // }, [currentUserStatus]);
 
-    // useEffect(() => {
-    //     if (token) {
-    //         axios
-    //             .get(
-    //                 `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`,
-    //                 {
-    //                     headers: {
-    //                         Authorization: `Bearer ${token}`,
-    //                         Accept: 'application/json',
-    //                     },
-    //                 }
-    //             )
-    //             .then((res) => {
-    //                 console.log('.thkujgvfen  res:', res);
-    //                 setToken(res.data);
-    //             })
-    //             .catch((err) => console.log('err: ', err));
-    //     }
-    // }, [token]);
-
-    // log out function to log the user out of google and set the profile array to null
-    // const logOut = () => {
-    //     googleLogout();
-    //     setToken(undefined);
-    // };
+    useEffect(() => {
+        if (currentUserStatus === 'success') navigate('/notes');
+    }, [currentUserStatus]);
 
     return (
         <div className={classes.container}>
             <h2>React Google Login</h2>
             <br />
-
+            {contextHolder}
             {currentUser ? (
                 <div>
                     <img src={currentUser.picture} alt="currentUser image" />
@@ -87,7 +63,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
                     <button onClick={logoutUser}>Log out</button>
                 </div>
             ) : (
-                <button onClick={googleLogin}>Sign in with Google 🚀 </button>
+                <Button onClick={googleLogin}>Sign in with Google 🚀 </Button>
             )}
         </div>
     );

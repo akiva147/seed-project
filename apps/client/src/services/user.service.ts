@@ -11,7 +11,6 @@ export class UserService {
     async getLoggedInUser() {
         try {
             const { data } = await authenticatedInstance.get(`${PREFIX}/me`);
-            console.log('🚀 ~ UserService ~ getLoggedInUser ~ data:', data);
             const user = UserSchema.parse(data);
 
             return user;

@@ -1,10 +1,11 @@
 import { CodeResponse } from '@react-oauth/google';
 import axios from 'axios';
 import { validateEnvs } from './env.util';
+import { Dispatch, SetStateAction } from 'react';
 
 export const getRefreshToken = (
     codeResponse: CodeResponse,
-    setToken: React.Dispatch<React.SetStateAction<string | undefined>>
+    setToken: Dispatch<SetStateAction<string | null>>
 ) => {
     const {
         VITE_GOOGLE_CLIENT_ID,
@@ -28,16 +29,14 @@ export const getRefreshToken = (
         })
         .then((res: any) => res.data)
         .then((response: any) => {
-            localStorage.setItem('loginToken', response.id_token);
-            console.log('.then  response:', response.id_token);
             setToken(response.id_token);
         })
-        .catch((err) => console.log('err: ', err));
+        .catch((error) => console.log('getRefreshToken error: ', error));
 };
 
 export const getNewAccessToken = (
     token: string,
-    setToken: React.Dispatch<React.SetStateAction<string | undefined>>
+    setToken: React.Dispatch<any>
 ) => {
     const { VITE_GOOGLE_CLIENT_ID, VITE_GOOGLE_CLIENT_SECRET } = validateEnvs();
 
@@ -57,8 +56,7 @@ export const getNewAccessToken = (
         })
         .then((res: any) => res.data)
         .then((res) => {
-            setToken(res);
-            console.log('new token response: ', res);
+            setToken(res.id_token);
         })
-        .catch((err) => console.log('err: ', err));
+        .catch((error) => console.log('getNewAccessToken error: ', error));
 };
