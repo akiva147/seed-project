@@ -1,0 +1,15 @@
+@use '../../theme/theme' as *;
+
+.container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+
+.inverse {
+    background-color: $primary-dark;
+
+    & > * {
+        color: white !important;
+    }
+}
